@@ -201,10 +201,10 @@
       const claimed=state.daily.lastClaim===todayKey();
       $('dailyStreak').textContent='Серія: '+state.daily.streak+' дн.';
       $('dailyTitle').textContent=claimed?'Нагороду на сьогодні отримано!':'Твоя нагорода чекає';
-      $('dailyDescription').textContent=claimed?'Завтра повертайся за наступною нагородою.':'Сьогодні можна отримати '+fmt(Math.min(2500,250+Math.max(0,state.daily.streak)*150)+(state.daily.streak%7===6?2500:0))+' монет.';
+      const nextStreak=state.daily.lastClaim===yesterdayKey()?state.daily.streak+1:1;const nextReward=Math.min(2500,250+(nextStreak-1)*150)+(nextStreak%7===0?2500:0);$('dailyDescription').textContent=claimed?'Завтра повертайся за наступною нагородою.':'Сьогодні можна отримати '+fmt(nextReward)+' монет.';
       $('dailyClaim').disabled=claimed;$('dailyClaim').textContent=claimed?'Уже отримано':'Забрати нагороду';
       $('prestigeCount').textContent=state.prestige+' рівнів';
-      $('prestigeDescription').textContent='Зароби '+fmt(PRESTIGE_REQUIREMENT)+' монет за поточний цикл. Престиж скине монети, скіни та покращення, але дасть постійний бонус +25%.';
+      $('prestigeDescription').textContent='Зароби '+fmt(PRESTIGE_REQUIREMENT)+' монет за поточний цикл. Престиж збереже твої монети, але скине скіни й покращення та дасть постійний бонус +25%.';
       $('prestigeProgress').style.width=Math.min(100,state.runEarned/PRESTIGE_REQUIREMENT*100)+'%';
       $('prestigeProgressText').textContent=fmt(state.runEarned)+' / '+fmt(PRESTIGE_REQUIREMENT)+' за цикл';
       $('prestigeBonus').textContent='Поточний бонус: ×'+(1+state.prestige*.25).toFixed(2);
@@ -291,9 +291,9 @@
     });
     $('prestigeButton').addEventListener('click',()=>{
       if(state.runEarned<PRESTIGE_REQUIREMENT)return;
-      const ok=confirm('Отримати престиж? Монети, скіни та покращення поточного циклу буде скинуто. Загальна статистика й досягнення збережуться.');
+      const ok=confirm('Отримати престиж? Твої монети, загальна статистика, щоденні нагороди та досягнення залишаться. Усі скіни й покращення поточного циклу буде скинуто.');
       if(!ok)return;
-      state.prestige++;state.coins=0;state.owned=['coin'];state.equipped='coin';state.levels={auto:0,boost:0,turbo:0};state.runEarned=0;
+      state.prestige++;state.owned=['coin'];state.equipped='coin';state.levels={auto:0,boost:0,turbo:0};state.runEarned=0;
       checkAchievements();playUiSound('buy');save();render();toast('Престиж отримано! Постійний бонус +25%');
     });
     setInterval(()=>{const income=passivePower();if(income>0){state.coins+=income;state.totalEarned+=income;state.runEarned+=income;checkAchievements();save();render()}},1000);
