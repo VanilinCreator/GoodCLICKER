@@ -8,12 +8,12 @@
   <style>
     :root{color-scheme:dark;--bg:#10101b;--panel:#191929;--panel2:#222239;--text:#f5f4ff;--muted:#aaa9c4;--accent:#9b7bff;--gold:#ffd76a;--line:#34334d}
     *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -15%,#34305c 0,transparent 48%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
-    button{font:inherit}.app{width:min(1120px,100%);margin:auto;padding:28px 20px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}.brand{font-weight:900;font-size:clamp(25px,5vw,36px);letter-spacing:-1.5px}.brand span{color:var(--accent)}.tag{color:var(--muted);font-size:13px}
+    button{font:inherit}.app{width:min(1120px,100%);margin:auto;padding:28px 20px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}.brand{font-weight:900;font-size:clamp(25px,5vw,36px);letter-spacing:-1.5px}.brand span{color:var(--accent)}.tag{color:var(--muted);font-size:13px}.sound-toggle{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:9px 12px;cursor:pointer;font-size:13px;font-weight:700}.sound-toggle:hover{border-color:var(--accent)}
     .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.stat,.panel{background:linear-gradient(145deg,#1d1d31,#171725);border:1px solid var(--line);border-radius:18px}.stat{padding:16px}.stat small{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.stat strong{font-size:clamp(18px,3vw,25px);font-variant-numeric:tabular-nums}
     .layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:18px}.play{padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:470px;text-align:center;overflow:hidden;position:relative}.eyebrow{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:2px}.skin-name{font-size:24px;font-weight:800;margin:7px 0 2px}.skin-rate{color:var(--gold);font-size:14px}.coin-button{width:min(260px,65vw);aspect-ratio:1;border:0;border-radius:50%;margin:25px auto 17px;cursor:pointer;background:radial-gradient(circle at 35% 28%,#fff1a9,#ffcb4e 42%,#d9891e 76%,#99511b);box-shadow:0 12px 0 #754016,0 20px 45px #0008,inset 0 5px 12px #fff8;display:grid;place-items:center;transition:transform .08s,filter .15s;user-select:none}.coin-button:hover{filter:brightness(1.08)}.coin-button:active{transform:translateY(8px) scale(.97);box-shadow:0 4px 0 #754016,0 10px 25px #0008}.coin-button span{font-size:clamp(76px,13vw,112px);filter:drop-shadow(0 5px 3px #8b501b66)}.hint{color:var(--muted);font-size:13px}.side{display:flex;flex-direction:column;gap:18px}.panel{padding:20px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.panel h2{font-size:18px;margin:0}.sub{font-size:12px;color:var(--muted)}.shop-list{display:flex;flex-direction:column;gap:9px;max-height:330px;overflow:auto;padding-right:3px}.item{display:flex;align-items:center;gap:12px;background:var(--panel2);border:1px solid transparent;border-radius:13px;padding:11px}.item-icon{width:43px;height:43px;display:grid;place-items:center;background:#ffffff0c;border-radius:11px;font-size:24px;flex:none}.item-info{min-width:0;flex:1;text-align:left}.item-info b{display:block;font-size:14px}.item-info small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.buy{border:0;border-radius:10px;background:var(--accent);color:white;padding:9px 11px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap}.buy:disabled{background:#414057;color:#9998ad;cursor:not-allowed}.buy.equipped{background:#355b4a}.empty{color:var(--muted);font-size:13px;text-align:center;padding:18px}.footer{color:#77768e;text-align:center;font-size:12px;margin-top:22px}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#292842;border:1px solid #555078;border-radius:12px;padding:11px 16px;pointer-events:none;transition:.2s;z-index:5}.toast.show{opacity:1;transform:translate(-50%,0)}
-    .coin-fly{position:fixed;z-index:20;left:0;top:0;pointer-events:none;font-size:25px;line-height:1;filter:drop-shadow(0 3px 3px #0008);will-change:transform,opacity;animation:coinFly 850ms cubic-bezier(.16,.72,.28,1) forwards}
+    .coin-fly{position:fixed;z-index:20;left:0;top:0;pointer-events:none;font-size:25px;line-height:1;filter:drop-shadow(0 3px 3px #0008);will-change:transform,opacity;animation:coinFly 1150ms cubic-bezier(.2,.72,.25,1) forwards}
     .coin-fly b{display:inline-block;margin-left:2px;padding:2px 5px;border-radius:8px;background:#2a2140;color:#ffe28a;font-size:11px;vertical-align:top}
-    @keyframes coinFly{0%{transform:translate(0,0) scale(.65) rotate(0deg);opacity:0}12%{opacity:1}38%{transform:translate(calc(var(--dx)*.38),calc(var(--dy)*.25 - 48px)) scale(1.12) rotate(100deg);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.35) rotate(420deg);opacity:0}}
+    @keyframes coinFly{0%{transform:translate(0,0) scale(.65) rotate(0deg);opacity:0}7%{opacity:1}20%{transform:translate(var(--drop-x),var(--drop-y)) scale(1.05) rotate(150deg);opacity:1}42%{transform:translate(var(--drop-x),var(--drop-y)) scale(1) rotate(190deg);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.35) rotate(560deg);opacity:0}}
     @media(prefers-reduced-motion:reduce){.coin-fly{display:none}}
     @media(max-width:760px){.app{padding:18px 14px 32px}.layout{grid-template-columns:1fr}.play{min-height:420px}.stats{gap:8px}.stat{padding:12px}.panel{padding:16px}.shop-list{max-height:none}.top{align-items:flex-start;flex-direction:column;gap:4px}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
@@ -21,7 +21,7 @@
 </head>
 <body>
   <main class="app">
-    <header class="top"><div class="brand">Good<span>CLICKER</span></div><div class="tag">Клікай • Заробляй • Відкривай нові скіни</div></header>
+    <header class="top"><div class="brand">Good<span>CLICKER</span></div><div class="tag">Клікай • Заробляй • Відкривай нові скіни</div><button class="sound-toggle" id="soundToggle" type="button" aria-pressed="true">🔊 Звук: увімкнено</button></header>
     <section class="stats" aria-label="Статистика">
       <div class="stat"><small>ТВОЇ МОНЕТИ</small><strong id="coins">0</strong></div>
       <div class="stat"><small>ЗА КЛІК</small><strong id="perClick">1</strong></div>
@@ -64,10 +64,57 @@
       {id:'boost',name:'Сильніший клік',icon:'💪',base:250,desc:'+1 монета за клік за рівень',type:'boost'},
       {id:'turbo',name:'Турбо-режим',icon:'⚡',base:1200,desc:'+25% до всього доходу за рівень',type:'turbo'}
     ];
-    const DEFAULT = {coins:0,owned:['coin'],equipped:'coin',levels:{auto:0,boost:0,turbo:0},totalClicks:0};
+    const DEFAULT = {coins:0,owned:['coin'],equipped:'coin',levels:{auto:0,boost:0,turbo:0},totalClicks:0,soundEnabled:true};
     let state = load();
     function load(){try{const saved=JSON.parse(localStorage.getItem('goodclicker-save'));if(!saved)return structuredClone(DEFAULT);return {...structuredClone(DEFAULT),...saved,levels:{...DEFAULT.levels,...(saved.levels||{})},owned:Array.isArray(saved.owned)?saved.owned:['coin']};}catch{return structuredClone(DEFAULT)}}
     function save(){localStorage.setItem('goodclicker-save',JSON.stringify(state))}
+    let audioContext=null;
+    function getAudioContext(){
+      if(!state.soundEnabled)return null;
+      const AudioCtx=window.AudioContext||window.webkitAudioContext;
+      if(!AudioCtx)return null;
+      if(!audioContext)audioContext=new AudioCtx();
+      if(audioContext.state==='suspended')audioContext.resume();
+      return audioContext;
+    }
+    function tone(ctx,frequency,start,duration,wave='sine',volume=.04,endFrequency=null){
+      const oscillator=ctx.createOscillator(),gain=ctx.createGain();
+      oscillator.type=wave;oscillator.frequency.setValueAtTime(frequency,start);
+      if(endFrequency)oscillator.frequency.exponentialRampToValueAtTime(endFrequency,start+duration);
+      gain.gain.setValueAtTime(.0001,start);gain.gain.exponentialRampToValueAtTime(volume,start+.012);
+      gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
+      oscillator.connect(gain);gain.connect(ctx.destination);oscillator.start(start);oscillator.stop(start+duration+.02);
+    }
+    function playCoinSound(){
+      const ctx=getAudioContext();if(!ctx)return;
+      const now=ctx.currentTime;
+      // Кілька коротких металевих дзвінких нот створюють ефект розсипаних монет.
+      for(let i=0;i<6;i++){
+        const start=now+i*.035+Math.random()*.025;
+        const frequency=1250+Math.random()*1250;
+        tone(ctx,frequency,start,.22+Math.random()*.12,'triangle',.025,frequency*.72);
+      }
+      tone(ctx,260,now,.11,'sine',.018,150);
+    }
+    function playUiSound(kind){
+      const ctx=getAudioContext();if(!ctx)return;
+      const now=ctx.currentTime;
+      if(kind==='buy'){
+        tone(ctx,520,now,.12,'sine',.035,760);
+        tone(ctx,780,now+.09,.18,'triangle',.04,1120);
+        tone(ctx,1040,now+.18,.22,'sine',.025,1320);
+      }else if(kind==='equip'){
+        tone(ctx,620,now,.12,'sine',.03,900);
+        tone(ctx,900,now+.08,.16,'triangle',.025,1100);
+      }else{
+        tone(ctx,430,now,.07,'sine',.018,560);
+      }
+    }
+    function updateSoundButton(){
+      const button=$('soundToggle');if(!button)return;
+      button.textContent=state.soundEnabled?'🔊 Звук: увімкнено':'🔇 Звук: вимкнено';
+      button.setAttribute('aria-pressed',String(state.soundEnabled));
+    }
     const $ = id => document.getElementById(id);
     const fmt = n => Math.floor(n).toLocaleString('uk-UA');
     function activeSkin(){return SKINS.find(s=>s.id===state.equipped)||SKINS[0]}
@@ -76,6 +123,7 @@
     function passivePower(){return (activeSkin().cps+state.levels.auto)*multiplier()}
     function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),1700)}
     function render(){
+      updateSoundButton();
       const skin=activeSkin();
       $('coins').textContent=fmt(state.coins);$('perClick').textContent=fmt(clickPower());$('perSecond').textContent=fmt(passivePower());
       $('activeName').textContent=skin.name;$('activeRate').textContent='+'+fmt(clickPower())+' за клік · '+fmt(passivePower())+'/сек';$('skinEmoji').textContent=skin.emoji;
@@ -111,6 +159,8 @@
         coin.style.top=(startY+spreadY)+'px';
         coin.style.setProperty('--dx',(targetX-startX-spreadX)+'px');
         coin.style.setProperty('--dy',(targetY-startY-spreadY)+'px');
+        coin.style.setProperty('--drop-x',((Math.random()-.5)*70)+'px');
+        coin.style.setProperty('--drop-y',(42+Math.random()*58)+'px');
         coin.addEventListener('animationend',()=>coin.remove(),{once:true});
         document.body.appendChild(coin);
       }
@@ -118,13 +168,13 @@
     $('clickButton').addEventListener('click',()=>{
       const earned=Math.max(1,Math.floor(clickPower()));
       state.coins+=earned;state.totalClicks++;
-      spawnCoinBurst(earned);save();render();
+      playCoinSound();spawnCoinBurst(earned);save();render();
     });
     $('skinShop').addEventListener('click',e=>{
       const button=e.target.closest('[data-skin]');if(!button)return;
       const skin=SKINS.find(s=>s.id===button.dataset.skin);if(!skin)return;
-      if(state.owned.includes(skin.id)){state.equipped=skin.id;toast('Скін змінено!');}
-      else if(state.coins>=skin.price){state.coins-=skin.price;state.owned.push(skin.id);state.equipped=skin.id;toast('Новий скін придбано!');}
+      if(state.owned.includes(skin.id)){state.equipped=skin.id;playUiSound('equip');toast('Скін змінено!');}
+      else if(state.coins>=skin.price){state.coins-=skin.price;state.owned.push(skin.id);state.equipped=skin.id;playUiSound('buy');toast('Новий скін придбано!');}
       save();render();
     });
     $('upgradeShop').addEventListener('click',e=>{
@@ -132,7 +182,12 @@
       const upgrade=UPGRADES.find(u=>u.id===button.dataset.upgrade);if(!upgrade)return;
       const level=state.levels[upgrade.id],price=Math.floor(upgrade.base*Math.pow(1.65,level));
       if(state.coins<price)return;
-      state.coins-=price;state.levels[upgrade.id]++;save();render();toast('Покращення придбано!');
+      state.coins-=price;state.levels[upgrade.id]++;playUiSound('buy');save();render();toast('Покращення придбано!');
+    });
+    $('soundToggle').addEventListener('click',()=>{
+      state.soundEnabled=!state.soundEnabled;
+      if(state.soundEnabled)playUiSound('toggle');
+      save();updateSoundButton();
     });
     setInterval(()=>{const income=passivePower();if(income>0){state.coins+=income;save();render()}},1000);
     render();
