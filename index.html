@@ -16,6 +16,22 @@
     @keyframes coinFly{0%{transform:translate(0,0) scale(.65) rotate(0deg);opacity:0}7%{opacity:1}20%{transform:translate(var(--drop-x),var(--drop-y)) scale(1.05) rotate(150deg);opacity:1}42%{transform:translate(var(--drop-x),var(--drop-y)) scale(1) rotate(190deg);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.35) rotate(560deg);opacity:0}}
     @media(prefers-reduced-motion:reduce){.coin-fly{display:none}}
     @media(max-width:760px){.app{padding:18px 14px 32px}.layout{grid-template-columns:1fr}.play{min-height:420px}.stats{gap:8px}.stat{padding:12px}.panel{padding:16px}.shop-list{max-height:none}.top{align-items:flex-start;flex-direction:column;gap:4px}}
+    .extra-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
+    .daily-card,.prestige-card{background:linear-gradient(145deg,#24213d,#191725);border:1px solid #494064;border-radius:16px;padding:16px}
+    .daily-card p,.prestige-card p{color:var(--muted);font-size:13px;line-height:1.5;margin:8px 0 12px}
+    .action-btn{border:0;border-radius:10px;background:var(--accent);color:white;padding:10px 14px;font-weight:800;cursor:pointer}
+    .action-btn:disabled{background:#414057;color:#9998ad;cursor:not-allowed}
+    .progress-track{height:9px;background:#0e0e18;border-radius:99px;overflow:hidden;margin:9px 0}
+    .progress-fill{height:100%;background:linear-gradient(90deg,#8d70ff,#e2baff);border-radius:99px;width:0}
+    .achievement-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .achievement{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:11px;min-width:0}
+    .achievement.done{border-color:#6dba91;background:#20372f}
+    .achievement b{display:block;font-size:13px}.achievement small{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+    .rarity{display:inline-block;font-size:9px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;padding:2px 6px;border-radius:6px;margin-top:5px;background:#ffffff12;color:#c5c3d8}
+    .rarity.Рідкісний{color:#6ecbff;background:#16374b}.rarity.Епічний{color:#d6a0ff;background:#38204b}.rarity.Легендарний{color:#ffd76a;background:#493817}.rarity.Міфічний{color:#ff8eaa;background:#4b2030}
+    .mini-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+    .mini-stat{background:var(--panel2);padding:12px;border-radius:12px}.mini-stat small{display:block;color:var(--muted);font-size:11px}.mini-stat b{display:block;font-size:17px;margin-top:4px}
+    @media(max-width:760px){.extra-grid{grid-template-columns:1fr}.achievement-list{grid-template-columns:1fr 1fr}} 
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   </style>
 </head>
@@ -38,6 +54,31 @@
         <section class="panel"><div class="panel-head"><h2>⚡ Покращення</h2><span class="sub">Постійні бонуси</span></div><div class="shop-list" id="upgradeShop"></div></section>
       </aside>
     </div>
+    <section class="extra-grid">
+      <section class="panel">
+        <div class="panel-head"><h2>🎁 Щоденна нагорода</h2><span class="sub" id="dailyStreak">Серія: 0 днів</span></div>
+        <div class="daily-card"><b id="dailyTitle">Повертайся щодня!</b><p id="dailyDescription">Забирай монети за щоденний вхід. За серію днів нагорода зростає.</p><button class="action-btn" id="dailyClaim">Забрати нагороду</button></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><h2>🌟 Престиж</h2><span class="sub" id="prestigeCount">0 рівнів</span></div>
+        <div class="prestige-card"><b>Перезапусти прогрес за постійний бонус</b><p id="prestigeDescription">Зароби 5 000 000 монет за поточний цикл, щоб отримати +25% до доходу назавжди.</p><div class="progress-track"><div class="progress-fill" id="prestigeProgress"></div></div><small class="sub" id="prestigeProgressText">0 / 5 000 000 за цикл</small><p id="prestigeBonus">Поточний бонус: ×1.00</p><button class="action-btn" id="prestigeButton" disabled>Поки недоступно</button></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><h2>🏆 Досягнення</h2><span class="sub" id="achievementCount">0 / 8</span></div>
+        <div class="achievement-list" id="achievementList"></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><h2>📊 Статистика</h2><span class="sub">За весь час</span></div>
+        <div class="mini-stats">
+          <div class="mini-stat"><small>Усього кліків</small><b id="statClicks">0</b></div>
+          <div class="mini-stat"><small>Зароблено монет</small><b id="statEarned">0</b></div>
+          <div class="mini-stat"><small>Витрачено монет</small><b id="statSpent">0</b></div>
+          <div class="mini-stat"><small>Куплено скінів</small><b id="statSkins">1</b></div>
+          <div class="mini-stat"><small>Поточний цикл</small><b id="statRun">0</b></div>
+          <div class="mini-stat"><small>Престиж</small><b id="statPrestige">0</b></div>
+        </div>
+      </section>
+    </section>
     <div class="footer">GoodCLICKER · Прогрес автоматично зберігається у цьому браузері</div>
   </main>
   <div class="toast" id="toast" role="status"></div>
@@ -57,16 +98,32 @@
       {id:'portal',name:'Космічний портал',emoji:'🌀',price:8000000,click:18000,cps:6500},
       {id:'robot',name:'Суперробот',emoji:'🤖',price:25000000,click:45000,cps:17000},
       {id:'galaxy',name:'Галактика',emoji:'🌌',price:80000000,click:120000,cps:50000},
-      {id:'universe',name:'Всесвіт',emoji:'✨',price:250000000,click:350000,cps:150000}
+      {id:'universe',name:'Всесвіт',emoji:'✨',price:250000000,click:350000,cps:150000},
+      {id:'nebula',name:'Туманність',emoji:'🌠',price:800000000,click:1100000,cps:480000},
+      {id:'phoenix',name:'Космічний фенікс',emoji:'🔥',price:3000000000,click:4200000,cps:1900000},
+      {id:'singularity',name:'Сингулярність',emoji:'🕳️',price:12000000000,click:16000000,cps:7500000},
+      {id:'timecore',name:'Ядро часу',emoji:'⌛',price:50000000000,click:65000000,cps:32000000},
+      {id:'infinity',name:'Нескінченність',emoji:'♾️',price:200000000000,click:280000000,cps:140000000}
     ];
     const UPGRADES = [
       {id:'auto',name:'Автоклікер',icon:'🤖',base:120,desc:'+1 клік автоматично щосекунди',type:'auto'},
       {id:'boost',name:'Сильніший клік',icon:'💪',base:250,desc:'+1 монета за клік за рівень',type:'boost'},
       {id:'turbo',name:'Турбо-режим',icon:'⚡',base:1200,desc:'+25% до всього доходу за рівень',type:'turbo'}
     ];
-    const DEFAULT = {coins:0,owned:['coin'],equipped:'coin',levels:{auto:0,boost:0,turbo:0},totalClicks:0,soundEnabled:true};
+    const ACHIEVEMENTS = [
+      {id:'click1',name:'Перший клік',desc:'Зроби 1 клік',reward:50,check:s=>s.totalClicks>=1},
+      {id:'click100',name:'Клікер-початківець',desc:'Зроби 100 кліків',reward:500,check:s=>s.totalClicks>=100},
+      {id:'click1000',name:'Майстер кліків',desc:'Зроби 1 000 кліків',reward:5000,check:s=>s.totalClicks>=1000},
+      {id:'earn100k',name:'Перші статки',desc:'Зароби 100 000 монет загалом',reward:2500,check:s=>s.totalEarned>=100000},
+      {id:'earn10m',name:'Мільйонер',desc:'Зароби 10 000 000 монет загалом',reward:25000,check:s=>s.totalEarned>=10000000},
+      {id:'skins5',name:'Колекціонер',desc:'Збери 5 скінів',reward:3000,check:s=>s.owned.length>=5},
+      {id:'skins15',name:'Мисливець за скінами',desc:'Збери 15 скінів',reward:50000,check:s=>s.owned.length>=15},
+      {id:'prestige1',name:'Нове начало',desc:'Отримай перший престиж',reward:10000,check:s=>s.prestige>=1}
+    ];
+    const PRESTIGE_REQUIREMENT = 5000000;
+    const DEFAULT = {coins:0,owned:['coin'],equipped:'coin',levels:{auto:0,boost:0,turbo:0},totalClicks:0,soundEnabled:true,prestige:0,totalEarned:0,runEarned:0,totalSpent:0,unlockedAchievements:[],daily:{lastClaim:'',streak:0}};
     let state = load();
-    function load(){try{const saved=JSON.parse(localStorage.getItem('goodclicker-save'));if(!saved)return structuredClone(DEFAULT);return {...structuredClone(DEFAULT),...saved,levels:{...DEFAULT.levels,...(saved.levels||{})},owned:Array.isArray(saved.owned)?saved.owned:['coin']};}catch{return structuredClone(DEFAULT)}}
+    function load(){try{const saved=JSON.parse(localStorage.getItem('goodclicker-save'));if(!saved)return structuredClone(DEFAULT);return {...structuredClone(DEFAULT),...saved,levels:{...DEFAULT.levels,...(saved.levels||{})},daily:{...DEFAULT.daily,...(saved.daily||{})},unlockedAchievements:Array.isArray(saved.unlockedAchievements)?saved.unlockedAchievements:[],owned:Array.isArray(saved.owned)?saved.owned:['coin']};}catch{return structuredClone(DEFAULT)}}
     function save(){localStorage.setItem('goodclicker-save',JSON.stringify(state))}
     let audioContext=null;
     function getAudioContext(){
@@ -118,10 +175,45 @@
     const $ = id => document.getElementById(id);
     const fmt = n => Math.floor(n).toLocaleString('uk-UA');
     function activeSkin(){return SKINS.find(s=>s.id===state.equipped)||SKINS[0]}
-    function multiplier(){return 1+state.levels.turbo*.25}
+    function multiplier(){return (1+state.levels.turbo*.25)*(1+state.prestige*.25)}
     function clickPower(){return (activeSkin().click+state.levels.boost)*multiplier()}
     function passivePower(){return (activeSkin().cps+state.levels.auto)*multiplier()}
     function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),1700)}
+    function rarityFor(s){
+      if(s.price>=50000000000)return 'Міфічний';
+      if(s.price>=3000000000)return 'Легендарний';
+      if(s.price>=250000000)return 'Епічний';
+      if(s.price>=25000)return 'Рідкісний';
+      return 'Звичайний';
+    }
+    function todayKey(date=new Date()){return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0')}
+    function yesterdayKey(){const d=new Date();d.setDate(d.getDate()-1);return todayKey(d)}
+    function checkAchievements(){
+      for(const a of ACHIEVEMENTS){
+        if(!state.unlockedAchievements.includes(a.id)&&a.check(state)){
+          state.unlockedAchievements.push(a.id);
+          state.coins+=a.reward;state.totalEarned+=a.reward;state.runEarned+=a.reward;
+          toast('Досягнення: '+a.name+' (+'+fmt(a.reward)+' 🪙)');
+        }
+      }
+    }
+    function renderExtras(){
+      const claimed=state.daily.lastClaim===todayKey();
+      $('dailyStreak').textContent='Серія: '+state.daily.streak+' дн.';
+      $('dailyTitle').textContent=claimed?'Нагороду на сьогодні отримано!':'Твоя нагорода чекає';
+      $('dailyDescription').textContent=claimed?'Завтра повертайся за наступною нагородою.':'Сьогодні можна отримати '+fmt(Math.min(2500,250+Math.max(0,state.daily.streak)*150)+(state.daily.streak%7===6?2500:0))+' монет.';
+      $('dailyClaim').disabled=claimed;$('dailyClaim').textContent=claimed?'Уже отримано':'Забрати нагороду';
+      $('prestigeCount').textContent=state.prestige+' рівнів';
+      $('prestigeDescription').textContent='Зароби '+fmt(PRESTIGE_REQUIREMENT)+' монет за поточний цикл. Престиж скине монети, скіни та покращення, але дасть постійний бонус +25%.';
+      $('prestigeProgress').style.width=Math.min(100,state.runEarned/PRESTIGE_REQUIREMENT*100)+'%';
+      $('prestigeProgressText').textContent=fmt(state.runEarned)+' / '+fmt(PRESTIGE_REQUIREMENT)+' за цикл';
+      $('prestigeBonus').textContent='Поточний бонус: ×'+(1+state.prestige*.25).toFixed(2);
+      $('prestigeButton').disabled=state.runEarned<PRESTIGE_REQUIREMENT;
+      $('prestigeButton').textContent=state.runEarned>=PRESTIGE_REQUIREMENT?'Отримати престиж':'Потрібно ще '+fmt(Math.max(0,PRESTIGE_REQUIREMENT-state.runEarned));
+      $('achievementCount').textContent=state.unlockedAchievements.length+' / '+ACHIEVEMENTS.length;
+      $('achievementList').innerHTML=ACHIEVEMENTS.map(a=>{const done=state.unlockedAchievements.includes(a.id);return '<div class="achievement '+(done?'done':'')+'"><b>'+(done?'✅ ':'🔒 ')+a.name+'</b><small>'+a.desc+'</small><small>Нагорода: '+fmt(a.reward)+' 🪙</small></div>'}).join('');
+      $('statClicks').textContent=fmt(state.totalClicks);$('statEarned').textContent=fmt(state.totalEarned);$('statSpent').textContent=fmt(state.totalSpent);$('statSkins').textContent=state.owned.length;$('statRun').textContent=fmt(state.runEarned);$('statPrestige').textContent=state.prestige;
+    }
     function render(){
       updateSoundButton();
       const skin=activeSkin();
@@ -130,12 +222,13 @@
       $('skinCount').textContent=state.owned.length+' / '+SKINS.length;
       $('skinShop').innerHTML=SKINS.map(s=>{
         const owned=state.owned.includes(s.id),equipped=state.equipped===s.id;
-        return '<div class="item"><div class="item-icon">'+s.emoji+'</div><div class="item-info"><b>'+s.name+'</b><small>+'+fmt(s.click)+' за клік · '+fmt(s.cps)+'/сек</small></div><button class="buy '+(equipped?'equipped':'')+'" data-skin="'+s.id+'" '+(!owned&&state.coins<s.price?'disabled':'')+'>'+(equipped?'Обрано':owned?'Обрати':fmt(s.price)+' 🪙')+'</button></div>';
+        const rarity=rarityFor(s);return '<div class="item"><div class="item-icon">'+s.emoji+'</div><div class="item-info"><b>'+s.name+'</b><small>+'+fmt(s.click)+' за клік · '+fmt(s.cps)+'/сек</small><span class="rarity '+rarity+'">'+rarity+'</span></div><button class="buy '+(equipped?'equipped':'')+'" data-skin="'+s.id+'" '+(!owned&&state.coins<s.price?'disabled':'')+'>'+(equipped?'Обрано':owned?'Обрати':fmt(s.price)+' 🪙')+'</button></div>';
       }).join('');
       $('upgradeShop').innerHTML=UPGRADES.map(u=>{
         const level=state.levels[u.id],price=Math.floor(u.base*Math.pow(1.65,level));
         return '<div class="item"><div class="item-icon">'+u.icon+'</div><div class="item-info"><b>'+u.name+' · ур. '+level+'</b><small>'+u.desc+'</small></div><button class="buy" data-upgrade="'+u.id+'" '+(state.coins<price?'disabled':'')+'>'+fmt(price)+' 🪙</button></div>';
       }).join('');
+      renderExtras();
     }
     function spawnCoinBurst(amount){
       if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
@@ -167,14 +260,14 @@
     }
     $('clickButton').addEventListener('click',()=>{
       const earned=Math.max(1,Math.floor(clickPower()));
-      state.coins+=earned;state.totalClicks++;
-      playCoinSound();spawnCoinBurst(earned);save();render();
+      state.coins+=earned;state.totalClicks++;state.totalEarned+=earned;state.runEarned+=earned;
+      checkAchievements();playCoinSound();spawnCoinBurst(earned);save();render();
     });
     $('skinShop').addEventListener('click',e=>{
       const button=e.target.closest('[data-skin]');if(!button)return;
       const skin=SKINS.find(s=>s.id===button.dataset.skin);if(!skin)return;
       if(state.owned.includes(skin.id)){state.equipped=skin.id;playUiSound('equip');toast('Скін змінено!');}
-      else if(state.coins>=skin.price){state.coins-=skin.price;state.owned.push(skin.id);state.equipped=skin.id;playUiSound('buy');toast('Новий скін придбано!');}
+      else if(state.coins>=skin.price){state.coins-=skin.price;state.totalSpent+=skin.price;state.owned.push(skin.id);state.equipped=skin.id;playUiSound('buy');toast('Новий скін придбано!');checkAchievements();}
       save();render();
     });
     $('upgradeShop').addEventListener('click',e=>{
@@ -182,15 +275,29 @@
       const upgrade=UPGRADES.find(u=>u.id===button.dataset.upgrade);if(!upgrade)return;
       const level=state.levels[upgrade.id],price=Math.floor(upgrade.base*Math.pow(1.65,level));
       if(state.coins<price)return;
-      state.coins-=price;state.levels[upgrade.id]++;playUiSound('buy');save();render();toast('Покращення придбано!');
+      state.coins-=price;state.totalSpent+=price;state.levels[upgrade.id]++;playUiSound('buy');save();render();toast('Покращення придбано!');
     });
     $('soundToggle').addEventListener('click',()=>{
       state.soundEnabled=!state.soundEnabled;
       if(state.soundEnabled)playUiSound('toggle');
       save();updateSoundButton();
     });
-    setInterval(()=>{const income=passivePower();if(income>0){state.coins+=income;save();render()}},1000);
-    render();
+    $('dailyClaim').addEventListener('click',()=>{
+      if(state.daily.lastClaim===todayKey())return;
+      state.daily.streak=state.daily.lastClaim===yesterdayKey()?state.daily.streak+1:1;
+      const reward=Math.min(2500,250+(state.daily.streak-1)*150)+(state.daily.streak%7===0?2500:0);
+      state.daily.lastClaim=todayKey();state.coins+=reward;state.totalEarned+=reward;state.runEarned+=reward;
+      checkAchievements();playUiSound('buy');save();render();toast('Щоденна нагорода: +'+fmt(reward)+' 🪙');
+    });
+    $('prestigeButton').addEventListener('click',()=>{
+      if(state.runEarned<PRESTIGE_REQUIREMENT)return;
+      const ok=confirm('Отримати престиж? Монети, скіни та покращення поточного циклу буде скинуто. Загальна статистика й досягнення збережуться.');
+      if(!ok)return;
+      state.prestige++;state.coins=0;state.owned=['coin'];state.equipped='coin';state.levels={auto:0,boost:0,turbo:0};state.runEarned=0;
+      checkAchievements();playUiSound('buy');save();render();toast('Престиж отримано! Постійний бонус +25%');
+    });
+    setInterval(()=>{const income=passivePower();if(income>0){state.coins+=income;state.totalEarned+=income;state.runEarned+=income;checkAchievements();save();render()}},1000);
+    checkAchievements();render();
   </script>
 </body>
 </html>
