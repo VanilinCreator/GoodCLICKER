@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10101b">
+  <title>GoodCLICKER</title>
+  <style>
+    :root{color-scheme:dark;--bg:#10101b;--panel:#191929;--panel2:#222239;--text:#f5f4ff;--muted:#aaa9c4;--accent:#9b7bff;--gold:#ffd76a;--line:#34334d}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% -15%,#34305c 0,transparent 48%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+    button{font:inherit}.app{width:min(1120px,100%);margin:auto;padding:28px 20px 48px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}.brand{font-weight:900;font-size:clamp(25px,5vw,36px);letter-spacing:-1.5px}.brand span{color:var(--accent)}.tag{color:var(--muted);font-size:13px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}.stat,.panel{background:linear-gradient(145deg,#1d1d31,#171725);border:1px solid var(--line);border-radius:18px}.stat{padding:16px}.stat small{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.stat strong{font-size:clamp(18px,3vw,25px);font-variant-numeric:tabular-nums}
+    .layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:18px}.play{padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:470px;text-align:center;overflow:hidden;position:relative}.eyebrow{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:2px}.skin-name{font-size:24px;font-weight:800;margin:7px 0 2px}.skin-rate{color:var(--gold);font-size:14px}.coin-button{width:min(260px,65vw);aspect-ratio:1;border:0;border-radius:50%;margin:25px auto 17px;cursor:pointer;background:radial-gradient(circle at 35% 28%,#fff1a9,#ffcb4e 42%,#d9891e 76%,#99511b);box-shadow:0 12px 0 #754016,0 20px 45px #0008,inset 0 5px 12px #fff8;display:grid;place-items:center;transition:transform .08s,filter .15s;user-select:none}.coin-button:hover{filter:brightness(1.08)}.coin-button:active{transform:translateY(8px) scale(.97);box-shadow:0 4px 0 #754016,0 10px 25px #0008}.coin-button span{font-size:clamp(76px,13vw,112px);filter:drop-shadow(0 5px 3px #8b501b66)}.hint{color:var(--muted);font-size:13px}.side{display:flex;flex-direction:column;gap:18px}.panel{padding:20px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.panel h2{font-size:18px;margin:0}.sub{font-size:12px;color:var(--muted)}.shop-list{display:flex;flex-direction:column;gap:9px;max-height:330px;overflow:auto;padding-right:3px}.item{display:flex;align-items:center;gap:12px;background:var(--panel2);border:1px solid transparent;border-radius:13px;padding:11px}.item-icon{width:43px;height:43px;display:grid;place-items:center;background:#ffffff0c;border-radius:11px;font-size:24px;flex:none}.item-info{min-width:0;flex:1;text-align:left}.item-info b{display:block;font-size:14px}.item-info small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.buy{border:0;border-radius:10px;background:var(--accent);color:white;padding:9px 11px;font-weight:800;font-size:12px;cursor:pointer;white-space:nowrap}.buy:disabled{background:#414057;color:#9998ad;cursor:not-allowed}.buy.equipped{background:#355b4a}.empty{color:var(--muted);font-size:13px;text-align:center;padding:18px}.footer{color:#77768e;text-align:center;font-size:12px;margin-top:22px}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;background:#292842;border:1px solid #555078;border-radius:12px;padding:11px 16px;pointer-events:none;transition:.2s;z-index:5}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:760px){.app{padding:18px 14px 32px}.layout{grid-template-columns:1fr}.play{min-height:420px}.stats{gap:8px}.stat{padding:12px}.panel{padding:16px}.shop-list{max-height:none}.top{align-items:flex-start;flex-direction:column;gap:4px}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="top"><div class="brand">Good<span>CLICKER</span></div><div class="tag">Клікай • Заробляй • Відкривай нові скіни</div></header>
+    <section class="stats" aria-label="Статистика">
+      <div class="stat"><small>ТВОЇ МОНЕТИ</small><strong id="coins">0</strong></div>
+      <div class="stat"><small>ЗА КЛІК</small><strong id="perClick">1</strong></div>
+      <div class="stat"><small>ЗА СЕКУНДУ</small><strong id="perSecond">0</strong></div>
+    </section>
+    <div class="layout">
+      <section class="panel play">
+        <div class="eyebrow">Твій активний скін</div><div class="skin-name" id="activeName">Золота монета</div><div class="skin-rate" id="activeRate">+1 монета за клік</div>
+        <button class="coin-button" id="clickButton" aria-label="Натисни, щоб заробити монети"><span id="skinEmoji">🪙</span></button>
+        <div class="hint">Натискай на об'єкт, щоб заробляти монети!</div>
+      </section>
+      <aside class="side">
+        <section class="panel"><div class="panel-head"><h2>🛍️ Магазин скінів</h2><span class="sub" id="skinCount">1 / 15</span></div><div class="shop-list" id="skinShop"></div></section>
+        <section class="panel"><div class="panel-head"><h2>⚡ Покращення</h2><span class="sub">Постійні бонуси</span></div><div class="shop-list" id="upgradeShop"></div></section>
+      </aside>
+    </div>
+    <div class="footer">GoodCLICKER · Прогрес автоматично зберігається у цьому браузері</div>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <script>
+    const SKINS = [
+      {id:'coin',name:'Золота монета',emoji:'🪙',price:0,click:1,cps:0},
+      {id:'cookie',name:'Смачне печиво',emoji:'🍪',price:50,click:2,cps:0},
+      {id:'gem',name:'Синій кристал',emoji:'💎',price:180,click:5,cps:1},
+      {id:'planet',name:'Планета',emoji:'🪐',price:650,click:12,cps:3},
+      {id:'rocket',name:'Ракета',emoji:'🚀',price:2200,click:30,cps:8},
+      {id:'crown',name:'Королівська корона',emoji:'👑',price:7500,click:75,cps:20},
+      {id:'dragon',name:'Дракон',emoji:'🐉',price:25000,click:180,cps:55},
+      {id:'diamond',name:'Діамант',emoji:'🔷',price:80000,click:450,cps:140},
+      {id:'ufo',name:'НЛО',emoji:'🛸',price:250000,click:1100,cps:350},
+      {id:'star',name:'Наднова зірка',emoji:'🌟',price:800000,click:2800,cps:900},
+      {id:'trophy',name:'Золотий кубок',emoji:'🏆',price:2500000,click:7000,cps:2400},
+      {id:'portal',name:'Космічний портал',emoji:'🌀',price:8000000,click:18000,cps:6500},
+      {id:'robot',name:'Суперробот',emoji:'🤖',price:25000000,click:45000,cps:17000},
+      {id:'galaxy',name:'Галактика',emoji:'🌌',price:80000000,click:120000,cps:50000},
+      {id:'universe',name:'Всесвіт',emoji:'✨',price:250000000,click:350000,cps:150000}
+    ];
+    const UPGRADES = [
+      {id:'auto',name:'Автоклікер',icon:'🤖',base:120,desc:'+1 клік автоматично щосекунди',type:'auto'},
+      {id:'boost',name:'Сильніший клік',icon:'💪',base:250,desc:'+1 монета за клік за рівень',type:'boost'},
+      {id:'turbo',name:'Турбо-режим',icon:'⚡',base:1200,desc:'+25% до всього доходу за рівень',type:'turbo'}
+    ];
+    const DEFAULT = {coins:0,owned:['coin'],equipped:'coin',levels:{auto:0,boost:0,turbo:0},totalClicks:0};
+    let state = load();
+    function load(){try{const saved=JSON.parse(localStorage.getItem('goodclicker-save'));if(!saved)return structuredClone(DEFAULT);return {...structuredClone(DEFAULT),...saved,levels:{...DEFAULT.levels,...(saved.levels||{})},owned:Array.isArray(saved.owned)?saved.owned:['coin']};}catch{return structuredClone(DEFAULT)}}
+    function save(){localStorage.setItem('goodclicker-save',JSON.stringify(state))}
+    const $ = id => document.getElementById(id);
+    const fmt = n => Math.floor(n).toLocaleString('uk-UA');
+    function activeSkin(){return SKINS.find(s=>s.id===state.equipped)||SKINS[0]}
+    function multiplier(){return 1+state.levels.turbo*.25}
+    function clickPower(){return (activeSkin().click+state.levels.boost)*multiplier()}
+    function passivePower(){return (activeSkin().cps+state.levels.auto)*multiplier()}
+    function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),1700)}
+    function render(){
+      const skin=activeSkin();
+      $('coins').textContent=fmt(state.coins);$('perClick').textContent=fmt(clickPower());$('perSecond').textContent=fmt(passivePower());
+      $('activeName').textContent=skin.name;$('activeRate').textContent='+'+fmt(clickPower())+' за клік · '+fmt(passivePower())+'/сек';$('skinEmoji').textContent=skin.emoji;
+      $('skinCount').textContent=state.owned.length+' / '+SKINS.length;
+      $('skinShop').innerHTML=SKINS.map(s=>{
+        const owned=state.owned.includes(s.id),equipped=state.equipped===s.id;
+        return '<div class="item"><div class="item-icon">'+s.emoji+'</div><div class="item-info"><b>'+s.name+'</b><small>+'+fmt(s.click)+' за клік · '+fmt(s.cps)+'/сек</small></div><button class="buy '+(equipped?'equipped':'')+'" data-skin="'+s.id+'" '+(!owned&&state.coins<s.price?'disabled':'')+'>'+(equipped?'Обрано':owned?'Обрати':fmt(s.price)+' 🪙')+'</button></div>';
+      }).join('');
+      $('upgradeShop').innerHTML=UPGRADES.map(u=>{
+        const level=state.levels[u.id],price=Math.floor(u.base*Math.pow(1.65,level));
+        return '<div class="item"><div class="item-icon">'+u.icon+'</div><div class="item-info"><b>'+u.name+' · ур. '+level+'</b><small>'+u.desc+'</small></div><button class="buy" data-upgrade="'+u.id+'" '+(state.coins<price?'disabled':'')+'>'+fmt(price)+' 🪙</button></div>';
+      }).join('');
+    }
+    $('clickButton').addEventListener('click',()=>{
+      state.coins+=clickPower();state.totalClicks++;save();render();
+    });
+    $('skinShop').addEventListener('click',e=>{
+      const button=e.target.closest('[data-skin]');if(!button)return;
+      const skin=SKINS.find(s=>s.id===button.dataset.skin);if(!skin)return;
+      if(state.owned.includes(skin.id)){state.equipped=skin.id;toast('Скін змінено!');}
+      else if(state.coins>=skin.price){state.coins-=skin.price;state.owned.push(skin.id);state.equipped=skin.id;toast('Новий скін придбано!');}
+      save();render();
+    });
+    $('upgradeShop').addEventListener('click',e=>{
+      const button=e.target.closest('[data-upgrade]');if(!button)return;
+      const upgrade=UPGRADES.find(u=>u.id===button.dataset.upgrade);if(!upgrade)return;
+      const level=state.levels[upgrade.id],price=Math.floor(upgrade.base*Math.pow(1.65,level));
+      if(state.coins<price)return;
+      state.coins-=price;state.levels[upgrade.id]++;save();render();toast('Покращення придбано!');
+    });
+    setInterval(()=>{const income=passivePower();if(income>0){state.coins+=income;save();render()}},1000);
+    render();
+  </script>
+</body>
+</html>
